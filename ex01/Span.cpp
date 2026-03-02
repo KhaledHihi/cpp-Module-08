@@ -1,9 +1,9 @@
 #include "Span.hpp"
-#include <algorithm> 
-#include <limits> 
 
 Span::Span() : N(0) {}
+
 Span::Span(unsigned int N) : N(N) {}
+
 Span::Span(const Span& other) : N(other.N), vec(other.vec) {}
 
 Span& Span::operator=(const Span& other) {
@@ -14,7 +14,7 @@ Span& Span::operator=(const Span& other) {
     return *this;
 }
 
-Span::~Span() {}
+Span::~Span(){}
 
 void Span::addNumber(int x)
 {
@@ -29,5 +29,22 @@ int Span::shortestSpan() const
         throw std::runtime_error("Not enough numbers");
     std::vector<int> tmp(vec);
     std::sort(tmp.begin(), tmp.end());
-    long max = std::numeric_limits<long>::max();
+    long min = std::numeric_limits<long>::max();
+    for (size_t i = 1; i < tmp.size(); ++i){
+        long diff = tmp[i] - tmp[i - 1];
+        if(diff < min)
+        min = diff;
+    }
+    return min;
+}
+
+int Span::longestSpan() const
+{
+    if (vec.size() < 2)
+        throw std::runtime_error("Not enough numbers");
+    
+    int min = *std::min_element(vec.begin(), vec.end());
+    int max = *std::max_element(vec.begin(), vec.end());
+
+    return max - min;
 }
